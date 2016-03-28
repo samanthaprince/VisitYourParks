@@ -10,7 +10,12 @@ const userSchema = new mongoose.Schema({
   email:      {type: String, requied: true, unique: true},
   password:   {type: String, required: true},
   admin:      {type: Boolean, default: false},
-  list:       [{type: Schema.Types.ObjectId, ref: 'Lists'}]
+  list:       [
+    {
+      item: {type: Schema.Types.ObjectId, ref: 'Items'},
+      completed: {type: Boolean, default: false}
+    }
+  ]
 });
 
 userSchema.methods.hashPassword = function(password) {
