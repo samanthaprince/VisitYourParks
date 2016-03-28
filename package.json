@@ -1,0 +1,23 @@
+{
+  "name": "visit_your_parks",
+  "version": "1.0.0",
+  "description": "National Parks 'Bucket' List",
+  "main": "server.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "gulp test",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/samanthaprince/VisitYourParks.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/samanthaprince/VisitYourParks/issues"
+  },
+  "homepage": "https://github.com/samanthaprince/VisitYourParks#readme"
+}
