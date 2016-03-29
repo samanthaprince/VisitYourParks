@@ -13,7 +13,11 @@ let authRouter = express.Router();
 require(__dirname + '/routes/auth_routes')(authRouter);
 
 let apiRouter = express.Router();
-require(__dirname + '/routes/user_routes');
+require(__dirname + '/routes/user_routes')(apiRouter);
+
+let parkRouter = express.Router();
+require(__dirname + '/routes/parks_routes')(parkRouter);
+
 
 let app = module.exports = exports = express();
 
@@ -27,8 +31,8 @@ app.use((req, res, next) => {
 app.use(morgan('dev'));
 app.use('/', authRouter);
 app.use('/', apiRouter);
+app.use('/', parkRouter);
 
 app.listen(PORT, () => {
   console.log('Server listening on port ' + PORT);
 });
-
