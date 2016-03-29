@@ -12,15 +12,10 @@ let authRouter = express.Router();
 require('./routes/auth_routes')(authRouter);
 
 let apiRouter = express.Router();
-<<<<<<< HEAD
 require(__dirname + '/routes/user_routes')(apiRouter);
 
 let parkRouter = express.Router();
 require(__dirname + '/routes/parks_routes')(parkRouter);
-
-=======
-require('./routes/user_routes')(apiRouter);
->>>>>>> 2ea4264815483c1eb5e6bd2dc619e45349472712
 
 let app = module.exports = exports = express();
 
