@@ -1,9 +1,8 @@
 'use strict';
 
 const mongoose = require('mongoose');
-// const Schema = mongoose.Schema;
 
-const itemSchema = new mongoose.Schema({
+const parksSchema = new mongoose.Schema({
   type:         {type: String},
   properties:   {code: String, name: String },
   geometry:     {
@@ -12,4 +11,4 @@ const itemSchema = new mongoose.Schema({
   }
 });
 
-module.exports = mongoose.model('Items', itemSchema);
+module.exports = mongoose.model('parks', parksSchema);
