@@ -23,7 +23,7 @@ describe('Integration Tests (Authentication Routes)', () => {
         password: '12345678'
       })
       .end((err, res) => {
-        if (err) console.log(err);
+        if (err) return console.log(err);
         user1ID = res.body._id;
         authToken = res.body.token;
         done();
