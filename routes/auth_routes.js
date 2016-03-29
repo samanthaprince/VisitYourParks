@@ -8,7 +8,7 @@ let User = require(__dirname + '/../models/user_model');
 module.exports = (router) => {
 
   router.post('/signup', parser, (req, res) => {
-    User.findOne({'email': req.body.email}, (err, user) => {
+    User.findOne({'authentication.email': req.body.email}, (err, user) => {
       if (err) return handleDBError(err, res); 
       if (user) {
         return res.status(400).json({msg: 'That account already exists'});  

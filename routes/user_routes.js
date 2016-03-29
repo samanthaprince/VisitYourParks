@@ -10,7 +10,6 @@ module.exports = (router) => {
 
   router.route('/users')
     .get(jwtAuth, (req, res) => {
-      console.log(req.user);
       // add user.admin
       User.find({}, (err, users) => {
         if (err) return console.log(err);
