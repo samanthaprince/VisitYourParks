@@ -1,17 +1,17 @@
 'use strict';
 
 let parser = require('body-parser').json();
-let handleDBError = require('./../lib/handle_db_error');
-let basicHTTP = require('./../lib/basic_http');
-let User = require('./../models/user_model');
+let handleDBError = require(__dirname + '/../lib/handle_db_error');
+let basicHTTP = require(__dirname + '/../lib/basic_http');
+let User = require(__dirname + '/../models/user_model');
 
 module.exports = (router) => {
 
   router.post('/signup', parser, (req, res) => {
-    User.findOne({'username': req.body.username}, (err, user) => {
+    User.findOne({'email': req.body.email}, (err, user) => {
       if (err) return handleDBError(err, res); 
       if (user) {
-        return res.status(400).json({msg: 'That username is already in use'});  
+        return res.status(400).json({msg: 'That account already exists'});  
       } else {
         var newUser = new User();
         if (!((req.body.email || '').length
@@ -19,7 +19,7 @@ module.exports = (router) => {
           return res.status(400).json({msg: 'Invalid username or password'});
         } 
       
-        newUser.username = req.body.username || req.body.email;
+        newUser.fullName = req.body.fullName || req.body.email;
         newUser.authentication.email = req.body.email;
         newUser.hashPassword(req.body.password);
         newUser.save((err, data) => {
