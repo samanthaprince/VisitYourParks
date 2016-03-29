@@ -10,8 +10,6 @@ let expect = chai.expect;
 process.env.MONGO_LAB = 'mongodb://localhost/test';
 require(__dirname + '/../server');
 
-var user1ID, authToken;
-
 describe('Integration Tests (Authentication Routes)', () => {
 
   before((done) => {
@@ -22,10 +20,8 @@ describe('Integration Tests (Authentication Routes)', () => {
         email: 'user1@example.gov',
         password: '12345678'
       })
-      .end((err, res) => {
+      .end((err) => {
         if (err) return console.log(err);
-        user1ID = res.body._id;
-        authToken = res.body.token;
         done();
       });
   });
