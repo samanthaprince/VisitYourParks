@@ -1,7 +1,7 @@
 'use strict';
 
 let parser = require('body-parser');
-let Parks = require(__dirname + '/../models/item_model');
+let Parks = require(__dirname + '/../models/park_model');
 let jwtAuth = require(__dirname + '/../lib/jwt_auth');
 
 module.exports = (router) => {

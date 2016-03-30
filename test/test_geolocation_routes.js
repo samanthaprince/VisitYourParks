@@ -7,61 +7,47 @@ chai.use(chaiHttp);
 let expect = chai.expect;
 let request = chai.request;
 
-process.env.TEST_DB = 'mongod://localhost/test'
+let Parks = require(__dirname + '/../models/park_model');
+
+process.env.TEST_DB = 'mongodb://localhost/test';
 require(__dirname + '/../server');
 
 describe('test geolocation route', () => {
   var userId;
   var authToken;
-  var adminID
-  var adminToken;
+
+  after((done) => {
+    mongoose.connection.db.dropDatabase(() => {
+      done();
+    });
+  });
 
   before((done) => {
     request('localhost:3000')
       .post('/signup')
       .send({
         fullName: 'User One',
-        email: 'user1@example.gov',
+        email: 'user4@example.gov',
         password: '12345678'
       })
       .end((err, res) => {
         if (err) return console.log(err);
-        user1ID = res.body._id;
+        userId = res.body._id;
         authToken = res.body.token;
         done();
       });
   });
 
-  before((done) => {
-    request('localhost:3000')
-      .post('/signup')
-      .send({
-        fullName: 'Admin User',
-        email: 'admin@example.org',
-        password: '1234567890'
-      })
-      .end((err, res) => {
-        adminID = res.body._id;
-        adminToken = res.body.token;
-        done();
-      });
+  beforeEach(function(done) {
+    var testPark = new Parks({'properties.UNIT_NAME': 'test park'});
+    testPark.save(function(err, data) {
+      if(err) throw err;
+
+      this.testPark = data;
+      done();
+    }.bind(this));
   });
 
-  before((done) => {
-    request('localhost:3000')
-      .put('/users/' + adminID)
-      .set('token', adminToken)
-      .send({
-        admin: 'true'
-      })
-      .end((err, res) => {
-        expect(err).to.eql(null);
-        expect(res.body.msg).to.eql('success');
-        done();
-      });
-  });
-
-  });
   it('should get all items in the db within a 200 mile radius of the lat and long', function(done) {
     request('localhost:3000')
       .get('/geolocation/?longitude=-122.335167&latitude=47.608013')
