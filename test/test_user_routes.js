@@ -62,11 +62,11 @@ describe('Integration Tests (User Routes)', () => {
       });
   });
 
-  // after((done) => {
-  //   mongoose.connection.db.dropDatabase(() => {
-  //     done();
-  //   });
-  // });
+  after((done) => {
+    mongoose.connection.db.dropDatabase(() => {
+      done();
+    });
+  });
 
   describe('Test user routes:', () => {
     it('should deny access to user array without admin flag', (done) => {
