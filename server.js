@@ -17,6 +17,9 @@ require(__dirname + '/routes/user_routes')(apiRouter);
 let parkRouter = express.Router();
 require(__dirname + '/routes/parks_routes')(parkRouter);
 
+let geolocationRouter = express.Router();
+require(__dirname + '/routes/geolocation_routes')(geolocationRouter);
+
 let app = module.exports = exports = express();
 
 app.use((req, res, next) => {
@@ -30,6 +33,7 @@ app.use(morgan('dev'));
 app.use('/', authRouter);
 app.use('/', apiRouter);
 app.use('/', parkRouter);
+app.use('/', geolocationRouter);
 
 app.listen(PORT, () => {
   console.log('Server listening on port ' + PORT);
