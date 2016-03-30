@@ -23,7 +23,11 @@ module.exports = (router) => {
   router.route('/users/:user')
     .get(jwtAuth, (req, res) => {
       if (req.params.user == req.user._id || req.user.admin) {
-        User.findById(req.params.user, (err, user) => {
+        User.findOne({_id: req.params.user}, (err) => {
+          if (err) return handleDBError(err, res);
+        })
+        .populate('list.item', 'properties')
+        .exec((err, user) => {
           if (err) return handleDBError(err, res);
           res.json(user);
         });
