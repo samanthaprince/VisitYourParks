@@ -8,7 +8,7 @@ module.exports = (router) => {
   router.use(parser.json());
 
   router.route ('/parks')
-    .get((req, res) => {
+    .get(jwtAuth, (req, res) => {
       Parks.find({}, (err, parks) => {
         res.json({data: parks});
       });
@@ -27,10 +27,11 @@ module.exports = (router) => {
       });
     });
 
-  router.route('/search/')
+  router.route('/search')
     .get(jwtAuth, (req, res) => {
-      var parkName = JSON.parse(req.query.properties.name);
-      Parks.find({'properties name': parkName}, (err, parks)=> {
+      var parkName = JSON.parse(req.query.name);
+      console.log('parkName: ', parkName);
+      Parks.find({'properties.Name': parkName}, (err, parks)=> {
         res.json(parks);
       });
     });

@@ -25,7 +25,7 @@ let userSchema = new mongoose.Schema({
     {
       item: {
         type: Schema.Types.ObjectId,
-        ref: 'Items'
+        ref: 'Parks'
       },
       completed: {
         type: Boolean,
@@ -52,4 +52,3 @@ userSchema.methods.generateToken = function() {
 };
 
 module.exports = mongoose.model('Users', userSchema);
-

@@ -3,12 +3,13 @@
 const mongoose = require('mongoose');
 
 const parksSchema = new mongoose.Schema({
-  type:         {type: String},
-  properties:   {code: String, name: String },
+ 
+  properties:   {UNIT_TYPE: String, UNIT_CODE: String, UNIT_NAME: String, PARKNAME: String, STATE: String, REGION: String },
   geometry:     {
-    type: {type: String},
-    coordinates: [Number]
+    coordinates: [Number],
+    type: {type: String}
+    
   }
 });
 
-module.exports = mongoose.model('parks', parksSchema);
+module.exports = mongoose.model('Parks', parksSchema);
