@@ -26,11 +26,11 @@ describe('Integration Tests (Authentication Routes)', () => {
       });
   });
 
-  after((done) => {
-    mongoose.connection.db.dropDatabase(() => {
-      done();
-    });
-  });
+  // after((done) => {
+  //   mongoose.connection.db.dropDatabase(() => {
+  //     done();
+  //   });
+  // });
 
   describe('Test authentication routes:', () => {
     it('should deny access without an authentication token', (done) => {
@@ -117,4 +117,3 @@ describe('Integration Tests (Authentication Routes)', () => {
   });
 
 });
-

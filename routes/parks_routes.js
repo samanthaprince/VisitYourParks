@@ -1,7 +1,7 @@
 'use strict';
 
 let parser = require('body-parser');
-let Parks = require(__dirname + '/../models/item_model');
+let Parks = require(__dirname + '/../models/park_model');
 let jwtAuth = require(__dirname + '/../lib/jwt_auth');
 
 module.exports = (router) => {
@@ -27,13 +27,25 @@ module.exports = (router) => {
       });
     });
 
+//To search for a specific park by name
   router.route('/search')
     .get(jwtAuth, (req, res) => {
       var parkName = JSON.parse(req.query.name);
       console.log('parkName: ', parkName);
-      Parks.find({'properties.Name': parkName}, (err, parks)=> {
+      Parks.find({'properties.UNIT_NAME': parkName}, (err, parks)=> {
         res.json(parks);
       });
     });
+
+//To search for parks within a state
+  router.route('/state')
+    .get(jwtAuth, (req, res) => {
+      var stateParks = JSON.parse(req.query.state);
+      console.log('parkName: ', stateParks);
+      Parks.find({'properties.STATE': stateParks}, (err, parks)=> {
+        res.json(parks);
+      });
+    });
+
 
 };

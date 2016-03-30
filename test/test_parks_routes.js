@@ -7,29 +7,33 @@ chai.use(chaiHttp);
 let expect = chai.expect;
 let request = chai.request;
 
+let Parks = require(__dirname + '/../models/park_model');
 
-// process.env.MONGO_LAB = 'mongodb://localhost/testdb';
-// require(__dirname + '/../server');
+
+process.env.TEST_DB = 'mongodb://localhost/test';
+require(__dirname + '/../server');
 
 describe('test Parks REST with authentication', function() {
   var token;
 
-  // after(function(done) {
-  //   mongoose.connection.db.dropDatabase(function() {
-  //     done();
-  //   });
-  // });
+  after(function(done) {
+    mongoose.connection.db.dropDatabase(function() {
+      done();
+    });
+  });
 
   before((done) => {
+    console.log('got here');
     request('localhost:3000')
       .post('/signup')
       .send({
         fullName: 'User',
-        email: 'user3@example.gov',
+        email: 'user41@example.gov',
         password: '12345678'
       })
       .end((err, res) => {
         if (err) console.log(err);
+        console.log('token: ' + token);
         token = res.body.token;
         done();
       });
@@ -46,27 +50,48 @@ describe('test Parks REST with authentication', function() {
     });
   });
 
-  it('should be able to get park by _id', function(done){
-    request('localhost:3000')
-    .get('/parks/:id')
-    .set('token', token)
-    .end(function(err, res) {
-      expect(err).to.eql(null);
-      expect(res.body.id).to.have.property('_id');
-      done();
-    });
-  });
 
   it('should be able to create a new park', function(done) {
     request('localhost:3000')
      .post('/parks')
      .set('token', token)
-     .send({name: 'great park'})
+     .send({'properties.UNIT_NAME': 'great park'})
      .end(function(err, res) {
        expect(err).to.eql(null);
-       expect(res.body.properties.name).to.eql('great park');
-       expect(res.body.properties).to.have.property('name');
+       expect(res.body.properties.UNIT_NAME).to.eql('great park');
+       expect(res.body.properties).to.have.property('UNIT_NAME');
        done();
      });
   });
+
+  describe('needs a park to work with', function() {
+    beforeEach(function(done) {
+      var testPark = new Parks({'properties.UNIT_NAME': 'test park'});
+      testPark.save(function(err, data) {
+        if(err) throw err;
+
+        this.testPark = data;
+        done();
+      }.bind(this));
+    });
+
+    it('should be able to make a park in a beforeEach block', function() {
+      expect(this.testPark.properties.UNIT_NAME).to.eql('test park');
+      console.log(this.testPark.properties);
+      expect(this.testPark.properties.UNIT_NAME).to.be.a('String');
+    });
+
+    it('should be able to get park by _id', function(done){
+      var id = this.testPark._id;
+      request('localhost:3000')
+      .get('/parks/' + id)
+      .set('token', token)
+      .end(function(err, res) {
+        expect(err).to.eql(null);
+        expect(typeof res.body).to.eql('object');
+        done();
+      });
+    });
+  });
+
 });
