@@ -13,20 +13,54 @@ require(__dirname + '/../server');
 describe('test geolocation route', () => {
   var userId;
   var authToken;
+  var adminID
+  var adminToken;
 
   before((done) => {
     request('localhost:3000')
       .post('/signup')
       .send({
-        fullName: 'Test User',
-        email: 'testUser4@codefellows.org',
-        password: 'test123456'
+        fullName: 'User One',
+        email: 'user1@example.gov',
+        password: '12345678'
       })
       .end((err, res) => {
-        userId = res.body._id;
+        if (err) return console.log(err);
+        user1ID = res.body._id;
         authToken = res.body.token;
         done();
       });
+  });
+
+  before((done) => {
+    request('localhost:3000')
+      .post('/signup')
+      .send({
+        fullName: 'Admin User',
+        email: 'admin@example.org',
+        password: '1234567890'
+      })
+      .end((err, res) => {
+        adminID = res.body._id;
+        adminToken = res.body.token;
+        done();
+      });
+  });
+
+  before((done) => {
+    request('localhost:3000')
+      .put('/users/' + adminID)
+      .set('token', adminToken)
+      .send({
+        admin: 'true'
+      })
+      .end((err, res) => {
+        expect(err).to.eql(null);
+        expect(res.body.msg).to.eql('success');
+        done();
+      });
+  });
+
   });
   it('should get all items in the db within a 200 mile radius of the lat and long', function(done) {
     request('localhost:3000')
