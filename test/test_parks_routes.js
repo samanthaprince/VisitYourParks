@@ -23,7 +23,6 @@ describe('test Parks REST with authentication', function() {
   });
 
   before((done) => {
-    console.log('got here');
     request('localhost:3000')
       .post('/signup')
       .send({
@@ -49,7 +48,6 @@ describe('test Parks REST with authentication', function() {
       done();
     });
   });
-
 
   it('should be able to create a new park', function(done) {
     request('localhost:3000')
@@ -77,7 +75,6 @@ describe('test Parks REST with authentication', function() {
 
     it('should be able to make a park in a beforeEach block', function() {
       expect(this.testPark.properties.UNIT_NAME).to.eql('test park');
-      console.log(this.testPark.properties);
       expect(this.testPark.properties.UNIT_NAME).to.be.a('String');
     });
 
@@ -93,5 +90,4 @@ describe('test Parks REST with authentication', function() {
       });
     });
   });
-
 });
