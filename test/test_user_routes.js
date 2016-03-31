@@ -15,7 +15,12 @@ describe('Integration Tests (User Routes)', () => {
   var user1ID,
     authToken,
     adminID,
-    adminToken;
+    adminToken,
+    park1ID,
+    park2ID,
+    park3ID,
+    park4ID,
+    park5ID;
 
   before((done) => {
     request('localhost:3000')
@@ -42,6 +47,7 @@ describe('Integration Tests (User Routes)', () => {
         password: '1234567890'
       })
       .end((err, res) => {
+        if (err) return console.log(err);
         adminID = res.body._id;
         adminToken = res.body.token;
         done();
@@ -58,6 +64,175 @@ describe('Integration Tests (User Routes)', () => {
       .end((err, res) => {
         expect(err).to.eql(null);
         expect(res.body.msg).to.eql('success');
+        done();
+      });
+  });
+
+  before((done) => {
+    request('localhost:3000')
+      .post('/parks')
+      .set('token', adminToken)
+      .send({
+        'geometry': {
+          'coordinates':[-122.6992830597305, 48.206276500082225],
+          'type' : 'Point' 
+        },
+        'properties': {
+          'UNIT_TYPE':'National Historical Reserve',
+          'STATE':'WA',
+          'REGION':'PW',
+          'UNIT_CODE':'EBLA',
+          'UNIT_NAME':'Ebey\'s Landing',
+          'PARKNAME':'Ebey\'s Landing'
+        }
+      })
+      .end((err, res) => {
+        if (err) return console.log(err);
+        park1ID = res.body._id;
+        done();
+      });
+  });
+
+  before((done) => {
+    request('localhost:3000')
+      .post('/parks')
+      .set('token', adminToken)
+      .send({
+        'geometry': {
+          'coordinates':[-121.78620386009118, 46.85444713025396],
+          'type': 'Point'
+        },
+        'properties': {
+          'UNIT_TYPE':'National Park',
+          'STATE':'WA',
+          'REGION':'PW',
+          'UNIT_CODE':'MORA',
+          'UNIT_NAME':'Mount Rainier National Park',
+          'PARKNAME':'Mount Rainier'
+        }
+      })
+      .end((err, res) => {
+        if (err) return console.log(err);
+        park2ID = res.body._id;
+        done();
+      });
+  });
+
+  before((done) => {
+    request('localhost:3000')
+      .post('/parks')
+      .set('token', adminToken)
+      .send({
+        'geometry': {
+          'coordinates':[-123.06697175920439,48.5235409051443],
+          'type':'Point'
+        },
+        'properties': {
+          'UNIT_TYPE':'National Historical Park',
+          'STATE':'WA',
+          'REGION':'PW',
+          'UNIT_CODE':'SAJH',
+          'UNIT_NAME':'San Juan Island',
+          'PARKNAME':'San Juan Island'
+        } 
+      })
+      .end((err, res) => {
+        if (err) return console.log(err);
+        park3ID = res.body._id;
+        done();
+      });
+  });
+
+  before((done) => {
+    request('localhost:3000')
+      .post('/parks')
+      .set('token', adminToken)
+      .send({
+        'geometry': {
+          'coordinates':[-123.92825143094836,47.87210847736174],
+          'type':'Point'
+        },
+        'properties': {
+          'UNIT_TYPE':'National Park',
+          'STATE':'WA',
+          'REGION':'PW',
+          'UNIT_CODE':'OLYM',
+          'UNIT_NAME':'Olympic National Park',
+          'PARKNAME':'Olympic National Park'
+        }
+      })
+      .end((err, res) => {
+        if (err) return console.log(err);
+        park4ID = res.body._id;
+        done();
+      });
+  });
+
+  before((done) => {
+    request('localhost:3000')
+      .post('/parks')
+      .set('token', adminToken)
+      .send({
+        'geometry': {
+          'coordinates':[-121.13649091338272,48.68493561334914],
+          'type':'Point'
+        },
+        'properties': {
+          'UNIT_TYPE':'National Park',
+          'STATE':'WA',
+          'REGION':'PW',
+          'UNIT_CODE':'NOCA',
+          'UNIT_NAME':'North Cascades',
+          'PARKNAME':'North Cascades'
+        }
+      })
+      .end((err, res) => {
+        if (err) return console.log(err);
+        park5ID = res.body._id;
+        done();
+      });
+  });
+
+  // one park in db should be out of range
+  before((done) => {
+    request('localhost:3000')
+      .post('/parks')
+      .set('token', adminToken)
+      .send({
+        'geometry': {
+          'coordinates':[-75.73711369973344,35.48548148196333],
+          'type':'Point'
+        },
+        'properties': {
+          'UNIT_TYPE':'National Seashore',
+          'STATE':'NC',
+          'REGION':'SE',
+          'UNIT_CODE':'CAHA',
+          'UNIT_NAME':'Cape Hatteras',
+          'PARKNAME':'Cape Hatteras'
+        }
+      })
+      .end((err) => {
+        if (err) return console.log(err);
+        done();
+      });
+  });
+
+  before((done) => {
+    request('localhost:3000')
+      .put('/users/' + adminID)
+      .set('token', adminToken)
+      .send({
+        list: [ 
+          {'item': park1ID},
+          {'item': park2ID},
+          {'item': park3ID},
+          {'item': park4ID},
+          {'item': park5ID}
+        ] 
+      })
+      .end((err) => {
+        if (err) return console.log(err);
         done();
       });
   });
@@ -102,6 +277,18 @@ describe('Integration Tests (User Routes)', () => {
           expect(err).to.eql(null);
           expect(res.body.fullName).to.equal('User One');
           expect(res.body).to.have.property('_id');
+          done();
+        });
+    });
+
+    it('should allow a user to view her own list', (done) => {
+      request('localhost:3000')
+        .get('/users/' + adminID + '/list') 
+        .set('token', adminToken)
+        .end((err, res) => {
+          expect(err).to.eql(null);
+          expect(typeof res.body).to.eql('object');
+          expect(Array.isArray(res.body)).to.eql(true);
           done();
         });
     });
