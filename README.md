@@ -33,26 +33,41 @@ are currently within 200 miles of their location.
 
     **GET** Token Authorization, Admin User Only
 
+        'Content-Type application/json'
         'token', <token>
 
   * **'/users/:user'** (where :user = ObjectId)
 
     **GET** Token Authorization, Existing User or Admin User
 
+        'Content-Type application/json'
         'token', <token>
 
     **PUT** Token Authorization, Existing User or Admin User
 
+        'Content-Type application/json'
         'token', <token>
+
+        {
+          fullName: <name>,
+          authentication.email: <email>,
+          authentication.password: <password>,
+          admin: <boolean>,
+          list: [
+            {'item': <ObjectId>}
+          ]
+        }
 
     **DELETE** Token Authorization, Admin User only
 
+        'Content-Type application/json'
         'token', <token>
 
   * **'/users/:user/list** - returns a user's list
 
     **GET** Token Authorization, Existing User or Admin User
 
+        'Content-Type application/json'
         'token', <token>
 
 ### Parks Routes (parks_routes.js)
@@ -61,28 +76,33 @@ are currently within 200 miles of their location.
 
     **GET** Token Authorization, Existing User
 
+        'Content-Type application/json'
         'token', <token>
 
     **POST** Token Authorization, Existing User
 
+        'Content-Type application/json'
         'token', <token>
 
   * **'/parks/:id'**
 
     **GET** Token Authorization, Existing User
 
+        'Content-Type application/json'
         'token', <token>
 
   * **'/search'**
 
     **GET** Token Authorization, Existing User
 
+        'Content-Type application/json'
         'token', <token>
 
   * **'/state'**
 
     **GET** Token Authorization, Existing User
 
+        'Content-Type application/json'
         'token', <token>
 
 ### Geolocation Routes
@@ -91,24 +111,13 @@ are currently within 200 miles of their location.
 
     **GET** Token Authorization, Existing User
 
+        'Content-Type application/json'
         'token', <token>
 
+  * **'/userGeo/:user/geolocation/?longitude=<longitude>&latitude=<latitude>'**
 
+    **GET** Token Authorization, Existing User
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        'Content-Type application/json'
+        'token', <token>
 
