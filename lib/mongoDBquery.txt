@@ -1,0 +1,16 @@
+Current Location:
+-122.352911, 47.618195
+
+db.parks.find(
+{
+  geometry:
+    {$near:
+      {$geometry:
+        {type:'Point',
+          coordinates: [-122.352911,47.618195]
+        },
+        $maxDistance: 321869
+      }
+    }
+  }
+)

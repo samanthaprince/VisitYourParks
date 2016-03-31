@@ -1,0 +1,2 @@
+db.copyDatabase('parkspassport', 'parks', 'ds025459.mlab.com:25459', 'parksapp', 'Codefellow')
+
