@@ -13,7 +13,6 @@ process.env.TEST_DB = 'mongodb://localhost/test';
 require(__dirname + '/../server');
 
 describe('test geolocation route', () => {
-  var userId;
   var authToken;
 
   after((done) => {
@@ -32,20 +31,26 @@ describe('test geolocation route', () => {
       })
       .end((err, res) => {
         if (err) return console.log(err);
-        userId = res.body._id;
         authToken = res.body.token;
         done();
       });
   });
 
   beforeEach(function(done) {
-    var testPark = new Parks({'properties.UNIT_NAME': 'test park'});
+
+    var testPark = new Parks ({
+      properties:   {UNIT_TYPE: 'Mountain', UNIT_CODE: 'Mtn', UNIT_NAME: 'mtn', PARKNAME: 'Mount Rainier', STATE: 'WA', REGION: 'PNW' },
+      geometry:     {
+        coordinates: [-121.7603,46.8523],
+        type: 'Point'
+      }
+    });
+
     testPark.save(function(err, data) {
       if(err) throw err;
-
       this.testPark = data;
-      done();
     }.bind(this));
+    done();
   });
 
   it('should get all items in the db within a 200 mile radius of the lat and long', function(done) {
