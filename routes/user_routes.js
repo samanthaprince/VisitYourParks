@@ -10,7 +10,7 @@ module.exports = (router) => {
 
   router.route('/users')
     .get(jwtAuth, (req, res) => {
-      if (req.user.admin) { 
+      if (req.user.admin) {
         User.find({}, (err, users) => {
           if (err) return handleDBError(err, res);
           res.json({data: users});
@@ -76,4 +76,3 @@ module.exports = (router) => {
       }
     });
 };
-
