@@ -5,8 +5,8 @@ This API leverages geolocation data from the National Parks service to
 provide users with the ability to discover when they are near features
 or parks they may be interested in.  
 
-A user creates a new account and adds features or parks to their "List".
-Then, whenever they log in, the API will tell them which features or parks
+A user creates a new account and adds parks or landmarks to their "List".
+Then, whenever they log in, the API will tell them which parks or landmarks
 are currently within 200 miles of their location.
 
 ## Routes
@@ -121,3 +121,9 @@ are currently within 200 miles of their location.
         'Content-Type application/json'
         'token', <token>
 
+
+## Authors
+
+[Samantha Prince] (https://github.com/samanthaprince)  
+[Kevin Sulonen] (https://github.com/sulonen)  
+[Mikleane Chouinard] (https://github.com/mikleane)  
